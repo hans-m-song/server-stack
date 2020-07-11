@@ -12,3 +12,26 @@ services:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+      - 80:80/tcp
+      - 443:443/tcp
+    environment:
+      TZ: Australia/Brisbane
+      ServerIP: 192.168.1.42
+      VIRTUAL_HOST: pihole.deep-thought
+      PROXY_LOCATION: pihole.deep-thought
+    volumes:
+      - ${PIHOLE_DIR}/pihole/:/etc/pihole/
+      - ${PIHOLE_DIR}/dnsmasq.d/:/etc/dnsmasq.d
+    dns:
+      - 127.0.0.1
+      - 192.168.1.1
+    restart: unless-stopped
+    hostname: pihole.deep-thought
