@@ -6,12 +6,15 @@ services:
     image: portainer/portainer
     ports:
       - 9000:9000/tcp
+    restart: unless-stopped
+    hostname: portainer.deep-thought
 
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
 
   pihole:
     container_name: pihole
