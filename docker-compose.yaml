@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer
+    ports:
+      - 9000:9000/tcp
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
