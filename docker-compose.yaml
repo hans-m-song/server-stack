@@ -28,8 +28,8 @@ services:
       VIRTUAL_HOST: pihole.deep-thought
       PROXY_LOCATION: pihole.deep-thought
     volumes:
-      - ./etc-pihole/:/etc/pihole/
-      - ./etc-dnsmasq.d/:/etc/dnsmasq.d
+      - ${PIHOLE_DIR}/pihole/:/etc/pihole/
+      - ${PIHOLE_DIR}/dnsmasq.d/:/etc/dnsmasq.d
     dns:
       - 127.0.0.1
       - 192.168.1.1
