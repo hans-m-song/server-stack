@@ -14,4 +14,4 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ${REGISTRY_DIR}/:/var/lib/registry
+      - ${REGISTRY_DIR}:/var/lib/registry
