@@ -14,4 +14,19 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ${REGISTRY_DIR}/:/var/lib/registry
+      - ${REGISTRY_DIR}:/var/lib/registry
+
+  steam-server:
+    container_name: steam-server
+    build: ./steamcmd
+    ports:
+      - 7778:7778/udp
+      - 27016:27016/udp
+      - 8080:8080/tcp
+      - 20561:20561/udp
+      - 123:123/udp
+    environment:
+      - STEAM_APP_ID
+      - STEAM_SERVER_DIR
+    volumes:
+      - ${STEAM_SERVER_DIR}/:/home/steam/steamcmd/kf2server
