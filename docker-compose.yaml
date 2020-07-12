@@ -12,21 +12,6 @@ services:
     restart: unless-stopped
     hostname: portainer.deep-thought
 
-  watchtower:
-    container_name: watchtower
-    image: containrrr/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-
-  registry:
-    container_name: registry
-    image: registry
-    ports:
-      - 5000:5000
-    volumes:
-      - ${REGISTRY_DIR}/:/var/lib/registry
-
   pihole:
     container_name: pihole
     image: pihole/pihole
@@ -41,6 +26,7 @@ services:
       ServerIP: 192.168.1.42
       VIRTUAL_HOST: pihole.deep-thought
       PROXY_LOCATION: pihole.deep-thought
+      WEBPASSWORD: ${PIHOLE_WEBPASSWD}
     volumes:
       - ${PIHOLE_CONFIG_DIR}:/etc/pihole/
       - ${PIHOLE_DNSMASQD_DIR}:/etc/dnsmasq.d
