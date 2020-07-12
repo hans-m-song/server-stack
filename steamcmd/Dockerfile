@@ -20,8 +20,8 @@ RUN apt update \
   && rm -rf /var/lib/apt/lists/*
 
 USER ${USER}
-WORKDIR ${HOME}
+WORKDIR ${STEAMCMDDIR}
 
-COPY --chown=${USER} launch.sh update.sh ${HOME}/
+COPY --chown=${USER} launch.sh update.sh ${STEAMCMDDIR}/
 
 CMD ./launch.sh
