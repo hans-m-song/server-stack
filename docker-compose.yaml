@@ -7,7 +7,7 @@ services:
     ports:
       - 9000:9000/tcp
     volumes:
-      - ${PORTAINER_DIR}/:/data
+      - ${PORTAINER_DIR}:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     hostname: portainer.deep-thought
@@ -42,8 +42,8 @@ services:
       VIRTUAL_HOST: pihole.deep-thought
       PROXY_LOCATION: pihole.deep-thought
     volumes:
-      - ${PIHOLE_DIR}/pihole/:/etc/pihole/
-      - ${PIHOLE_DIR}/dnsmasq.d/:/etc/dnsmasq.d
+      - ${PIHOLE_CONFIG_DIR}:/etc/pihole/
+      - ${PIHOLE_DNSMASQD_DIR}:/etc/dnsmasq.d
     dns:
       - 127.0.0.1
       - 192.168.1.1
