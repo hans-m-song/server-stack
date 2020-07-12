@@ -6,12 +6,12 @@ ENV STEAMCMDDIR ${HOME}/steamcmd
 
 RUN apt update \
   && apt install --no-install-recommends --no-install-suggests -y \
-  curl lib32gcc1 lib32gcc1 lib32stdc++6 ca-certificates  \
+  curl lib32gcc1 lib32stdc++6 ca-certificates  \
   && apt autoremove  \
   && useradd -m ${USER}  \
   && su - ${USER}  \
   && mkdir -p ${STEAMCMDDIR} \
-  && curl -sqL 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar xvzf - -C ${STEAMCMDDIR} \
+  && curl -sqL 'http://media.steampowered.com/client/steamcmd_linux.tar.gz' | tar xvzf - -C ${STEAMCMDDIR} \
   && ./${STEAMCMDDIR}/steamcmd.sh +quit \
   && mkdir /home/steam/.steam/sdk32 \
   && ln -s /home/steam/steamcmd/linux32/steamclient.so /home/steam/.steam/sdk32/steamclient.so \

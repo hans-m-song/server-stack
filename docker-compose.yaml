@@ -64,4 +64,4 @@ services:
       - STEAM_APP_ID
       - STEAM_SERVER_DIR
     volumes:
-      - ${STEAM_SERVER_DIR}/:/home/steam/steamcmd/kf2server
+      - ${STEAM_SERVER_DIR}:/home/steam/steamcmd/server
