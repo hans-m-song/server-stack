@@ -6,6 +6,9 @@ services:
     image: portainer/portainer
     ports:
       - 9000:9000/tcp
+    volumes:
+      - ${PORTAINER_DIR}/:/data
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     hostname: portainer.deep-thought
 
