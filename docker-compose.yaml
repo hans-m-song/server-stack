@@ -16,6 +16,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
+  registry:
+    container_name: registry
+    image: registry
+    ports:
+      - 5000:5000
+    volumes:
+      - ${REGISTRY_DIR}/:/var/lib/registry
+
   pihole:
     container_name: pihole
     image: pihole/pihole
