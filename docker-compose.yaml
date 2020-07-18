@@ -50,6 +50,7 @@ services:
       - 5000:5000
     volumes:
       - ${REGISTRY_DIR}:/var/lib/registry
+    restart: unless-stopped
 
   steam-server:
     container_name: steam-server
@@ -65,3 +66,4 @@ services:
       - STEAM_SERVER_DIR
     volumes:
       - ${STEAM_SERVER_DIR}:/home/steam/steamcmd/server
+    hostname: steam-server.deep-thought

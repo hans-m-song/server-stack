@@ -4,5 +4,5 @@ docker run -it \
   -p 8080:8080/tcp \
   -p 20561:20561/udp \
   -p 123:123/udp \
-  -v /mnt/data/steam/kf2server:/home/steam/steamcmd/kf2server \
-  kf2-server bash
+  -v /mnt/data/steam/kf2server:/home/steam/steamcmd/server \
+  steamcmd
