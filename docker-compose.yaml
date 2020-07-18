@@ -1,6 +1,18 @@
 version: "3.7"
 
 services:
+  docker-nginx:
+    container_name: docker-nginx
+    build: ./nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${NGINX_CONF_DIR}:/etc/nginx/conf:ro
+      - ${NGINX_HTML_DIR}:/usr/share/nginx/html:ro
+    restart: unless-stopped
+    hostname: nginx.deep-thought
+
   portainer:
     container_name: portainer
     image: portainer/portainer
@@ -19,8 +31,8 @@ services:
       - 53:53/tcp
       - 53:53/udp
       - 67:67/udp
-      - 80:80/tcp
-      - 443:443/tcp
+      - 9041:80/tcp
+      - 9042:443/tcp
     environment:
       TZ: Australia/Brisbane
       ServerIP: 192.168.1.42
