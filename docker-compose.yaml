@@ -11,13 +11,12 @@ services:
       - ${NGINX_CONF_DIR}:/etc/nginx/conf:ro
       - ${NGINX_HTML_DIR}:/usr/share/nginx/html:ro
     restart: unless-stopped
-    hostname: nginx.deep-thought
 
   portainer:
     container_name: portainer
     image: portainer/portainer
     ports:
-      - 9000:9000/tcp
+      - 9001:9000/tcp
     volumes:
       - ${PORTAINER_DIR}:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -31,8 +30,8 @@ services:
       - 53:53/tcp
       - 53:53/udp
       - 67:67/udp
-      - 9041:80/tcp
-      - 9042:443/tcp
+      - 9002:80/tcp
+      - 9003:443/tcp
     environment:
       TZ: Australia/Brisbane
       ServerIP: 192.168.1.42
