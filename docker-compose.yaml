@@ -65,11 +65,7 @@ services:
   samba:
     container_name: samba
     image: dperson/samba
-    ports:
-      - 137:137
-      - 138:138
-      - 139:139
-      - 445:445
+    network_mode: host
     command: -p -n -w "WORKGROUP" ${SAMBA_USERS} ${SAMBA_SHARES}
     restart: unless-stopped
     hostname: samba.deep-thought
