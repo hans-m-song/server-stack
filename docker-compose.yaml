@@ -79,6 +79,18 @@ services:
     restart: unless-stopped
     hostname: minidlna.deep-though
 
+  deluge:
+    container_name: deluge
+    image: linuxserver/deluge
+    network_mode: host
+    environment:
+      - PUID=100
+      - PGID=102
+    volumes:
+      - ${DELUGE_DIR}:/deluge:z
+      - ${DELUGE_CONFIG}:/config:Z
+    hostname: deluge.deep-thought
+
   steam-server:
     container_name: steam-server
     build: ./steamcmd
