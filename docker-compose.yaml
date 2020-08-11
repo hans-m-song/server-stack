@@ -70,6 +70,15 @@ services:
     restart: unless-stopped
     hostname: samba.deep-thought
 
+  minidlna:
+    container_name: minidlna
+    image: vladgh/minidlna
+    network_mode: host
+    volumes:
+      - ${MINIDLNA_DIR}:/var/lib/minidlna
+    restart: unless-stopped
+    hostname: minidlna.deep-though
+
   steam-server:
     container_name: steam-server
     build: ./steamcmd
