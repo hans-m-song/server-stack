@@ -53,15 +53,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  registry:
-    container_name: registry
-    image: registry
-    ports:
-      - 5000:5000
-    volumes:
-      - ${REGISTRY_DIR}:/var/lib/registry
-    restart: unless-stopped
-
   samba:
     container_name: samba
     image: dperson/samba
@@ -106,3 +97,14 @@ services:
     volumes:
       - ${STEAM_SERVER_DIR}:/home/steam/steamcmd/server
     hostname: steam-server.deep-thought
+
+x-disabled:
+  registry:
+    container_name: registry
+    image: registry
+    ports:
+      - 5000:5000
+    volumes:
+      - ${REGISTRY_DIR}:/var/lib/registry
+    restart: unless-stopped
+
