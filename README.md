@@ -15,3 +15,9 @@ check the .env file for configuration parameters
 ### docker-compose.override.yaml
 
 set volumes and env variables for samba and minidlna
+
+# Todo
+
+- upgrade to kubernetes
+- calibre server
+- discord bot
