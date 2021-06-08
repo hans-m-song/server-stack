@@ -22,6 +22,8 @@ set volumes and env variables for samba and minidlna
 - calibre server
 - discord bot
 - synology integration
+- prometheus
+- graphana
 
 ## Maybe todo
 
@@ -30,3 +32,4 @@ set volumes and env variables for samba and minidlna
 - calishot mirror
 - gitlab
 - overleaf
+- jupyter notebook
