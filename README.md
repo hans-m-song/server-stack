@@ -16,8 +16,17 @@ check the .env file for configuration parameters
 
 set volumes and env variables for samba and minidlna
 
-# Todo
+## Todo
 
 - upgrade to kubernetes
 - calibre server
 - discord bot
+- synology integration
+
+## Maybe todo
+
+- wikipedia mirror
+- steam server
+- calishot mirror
+- gitlab
+- overleaf
