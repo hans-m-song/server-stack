@@ -16,6 +16,13 @@ check the .env file for configuration parameters
 
 set volumes and env variables for samba and minidlna
 
+## Current Features
+
+- pihole
+- samba
+- dlna
+- deluge
+
 ## Todo
 
 - upgrade to kubernetes
