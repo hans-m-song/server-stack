@@ -1,110 +1,67 @@
 version: '3.7'
 
 services:
-  docker-nginx:
-    container_name: docker-nginx
-    build: ./nginx
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      args:
+        HOST_NAME: ${HOST_NAME}
+        HOST_IP: ${HOST_IP}
     ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ${NGINX_CONF_DIR}:/etc/nginx/conf:ro
+      - 80:80/tcp
+      - 80:80/udp
+      - 443:443/tcp
+      - 443:443/udp
     restart: unless-stopped
-
-  portainer:
-    container_name: portainer
-    image: portainer/portainer
-    ports:
-      - 9001:9000/tcp
-    volumes:
-      - ${PORTAINER_DIR}:/data
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-    hostname: portainer.deep-thought
 
   pihole:
     container_name: pihole
+    build:
+      context: ./pihole
     image: pihole/pihole
     ports:
       - 53:53/tcp
       - 53:53/udp
-      - 67:67/udp
-      - 9002:80/tcp
-      - 9003:443/tcp
+      - 9001:80/tcp
     environment:
       TZ: Australia/Brisbane
+      WEBPASSWORD: ${PIHOLE_PASSWORD}
       ServerIP: ${HOST_IP}
-      VIRTUAL_HOST: pihole.deep-thought
-      PROXY_LOCATION: pihole.deep-thought
-      WEBPASSWORD: ${PIHOLE_WEBPASSWD}
     volumes:
-      - ${PIHOLE_CONFIG_DIR}:/etc/pihole/
-      - ${PIHOLE_DNSMASQD_DIR}:/etc/dnsmasq.d
-    dns:
-      - 127.0.0.1
-      - 192.168.1.1
+      - pihole-config:/etc/pihole
+      - pihole-cache:/etc/dnsmasq.d
     restart: unless-stopped
-    hostname: pihole.deep-thought
 
-  watchtower:
-    container_name: watchtower
-    image: containrrr/watchtower
+  portainer:
+    container_name: portainer
+    build:
+      context: ./portainer
+      args:
+        PASSWORD: ${PORTAINER_PASSWORD}
+    ports:
+      - 9002:9000/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-cache:/data
     restart: unless-stopped
 
-  samba:
-    container_name: samba
-    image: dperson/samba
-    network_mode: host
-    command: -p -n -w "WORKGROUP" ${SAMBA_USERS} ${SAMBA_SHARES}
-    restart: unless-stopped
-    hostname: samba.deep-thought
-
-  minidlna:
-    container_name: minidlna
-    image: vladgh/minidlna
-    network_mode: host
-    volumes:
-      - ${MINIDLNA_DIR}:/var/lib/minidlna
-    restart: unless-stopped
-    hostname: minidlna.deep-though
-
-  deluge:
-    container_name: deluge
-    image: linuxserver/deluge
-    network_mode: host
+  redbot:
+    container_name: redbot
+    image: phasecorex/red-discordbot:audio
     environment:
-      - PUID=100
-      - PGID=102
+      TZ: Australia/Brisbane
+      PREFIX: '>'
+      NICENESS: '-5'
+      TOKEN: ${DISCORD_BOT_TOKEN}
     volumes:
-      - ${DELUGE_DIR}:/deluge:z
-      - ${DELUGE_CONFIG}:/config:Z
-    hostname: deluge.deep-thought
-
-  steam-server:
-    container_name: steam-server
-    build: ./steamcmd
-    ports:
-      - 7778:7778/udp
-      - 27016:27016/udp
-      - 8080:8080/tcp
-      - 20561:20561/udp
-      - 123:123/udp
-    environment:
-      - STEAM_APP_ID
-      - STEAM_SERVER_DIR
-    volumes:
-      - ${STEAM_SERVER_DIR}:/home/steam/steamcmd/server
-    hostname: steam-server.deep-thought
-
-x-disabled:
-  registry:
-    container_name: registry
-    image: registry
-    ports:
-      - 5000:5000
-    volumes:
-      - ${REGISTRY_DIR}:/var/lib/registry
+      - redbot-cache:/data
     restart: unless-stopped
+    cap_add:
+      - SYS_NICE
 
+volumes:
+  pihole-config: {}
+  pihole-cache: {}
+  portainer-cache: {}
+  redbot-cache: {}
