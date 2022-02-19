@@ -23,7 +23,6 @@ services:
     ports:
       - 53:53/tcp
       - 53:53/udp
-      - 9001:80/tcp
     environment:
       TZ: Australia/Brisbane
       WEBPASSWORD: ${PIHOLE_PASSWORD}
