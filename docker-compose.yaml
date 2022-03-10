@@ -6,7 +6,7 @@ services:
       context: ./nginx
       args:
         HOST_NAME: ${HOST_NAME}
-        HOST_IP: ${HOST_IP}
+        PUBLIC_HOST_NAME: ${PUBLIC_HOST_NAME}
     ports:
       - 80:80/tcp
       - 80:80/udp
@@ -20,8 +20,7 @@ services:
       args:
         HOST_NAME: ${HOST_NAME}
         HOST_IP: ${HOST_IP}
-        ALIASES: portainer pihole nas ssh splunk
-    image: pihole/pihole
+        PIHOLE_ALIASES: ${PIHOLE_ALIASES}
     ports:
       - 53:53/tcp
       - 53:53/udp
@@ -32,6 +31,11 @@ services:
     volumes:
       - pihole-config:/etc/pihole
       - pihole-cache:/etc/dnsmasq.d
+    restart: unless-stopped
+
+  hello:
+    build:
+      context: ./hello
     restart: unless-stopped
 
   portainer:
@@ -46,18 +50,16 @@ services:
       - portainer-cache:/data
     restart: unless-stopped
 
-  redbot:
-    image: phasecorex/red-discordbot:audio
-    environment:
-      TZ: Australia/Brisbane
-      PREFIX: '>'
-      NICENESS: '-5'
-      TOKEN: ${DISCORD_BOT_TOKEN}
-    volumes:
-      - redbot-cache:/data
+  ddns:
+    build:
+      context: ./ddns
+      args:
+        DDNS_CRON: ${DDNS_CRON}
+        DDNS_USER: ${DDNS_USER}
+        DDNS_PASS: ${DDNS_PASS}
+        DDNS_ENDPOINT: ${DDNS_ENDPOINT}
+        PUBLIC_HOST_NAME: ${PUBLIC_HOST_NAME}
     restart: unless-stopped
-    cap_add:
-      - SYS_NICE
 
 volumes:
   pihole-config: {}
