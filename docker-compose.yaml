@@ -22,6 +22,7 @@ services:
         HOST_IP: ${HOST_IP}
         PIHOLE_ALIASES: ${PIHOLE_ALIASES}
     ports:
+      - 4200:80
       - 53:53/tcp
       - 53:53/udp
     environment:
@@ -44,11 +45,24 @@ services:
       args:
         PASSWORD: ${PORTAINER_PASSWORD}
     ports:
-      - 9002:9000/tcp
+      - 4201:9000/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer-cache:/data
     restart: unless-stopped
+
+  redbot:
+    image: phasecorex/red-discordbot:audio
+    environment:
+      TZ: Australia/Brisbane
+      PREFIX: '>'
+      NICENESS: '-5'
+      TOKEN: ${DISCORD_BOT_TOKEN}
+    volumes:
+      - redbot-cache:/data
+    restart: unless-stopped
+    cap_add:
+      - SYS_NICE
 
   ddns:
     build:
