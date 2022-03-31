@@ -8,10 +8,7 @@ services:
         HOST_NAME: ${HOST_NAME}
         PUBLIC_HOST_NAME: ${PUBLIC_HOST_NAME}
     ports:
-      - 80:80/tcp
-      - 80:80/udp
-      - 443:443/tcp
-      - 443:443/udp
+      - 80:80
     restart: unless-stopped
 
   pihole:
@@ -32,11 +29,15 @@ services:
     volumes:
       - pihole-config:/etc/pihole
       - pihole-cache:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
     restart: unless-stopped
 
   hello:
     build:
       context: ./hello
+    ports:
+      - 4201:80
     restart: unless-stopped
 
   portainer:
@@ -45,38 +46,27 @@ services:
       args:
         PASSWORD: ${PORTAINER_PASSWORD}
     ports:
-      - 4201:9000/tcp
+      - 4202:9000/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer-cache:/data
     restart: unless-stopped
 
-  redbot:
-    image: phasecorex/red-discordbot:audio
+  ytdl:
+    image: tzahi12345/youtubedl-material:nightly
     environment:
-      TZ: Australia/Brisbane
-      PREFIX: '>'
-      NICENESS: '-5'
-      TOKEN: ${DISCORD_BOT_TOKEN}
+      ALLOW_CONFIG_MUTATIONS: 'true'
     volumes:
-      - redbot-cache:/data
-    restart: unless-stopped
-    cap_add:
-      - SYS_NICE
-
-  ddns:
-    build:
-      context: ./ddns
-      args:
-        DDNS_CRON: ${DDNS_CRON}
-        DDNS_USER: ${DDNS_USER}
-        DDNS_PASS: ${DDNS_PASS}
-        DDNS_ENDPOINT: ${DDNS_ENDPOINT}
-        PUBLIC_HOST_NAME: ${PUBLIC_HOST_NAME}
+      - ./ytdl/data/appdata:/app/appdata
+      - ./ytdl/data/users:/app/users
+      - ./ytdl/data/out/audio:/app/audio
+      - ./ytdl/data/out/video:/app/video
+      - ./ytdl/data/out/subscriptions:/app/subscriptions
+    ports:
+      - 8998:17442
     restart: unless-stopped
 
 volumes:
   pihole-config: {}
   pihole-cache: {}
   portainer-cache: {}
-  redbot-cache: {}
